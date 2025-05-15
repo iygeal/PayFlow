@@ -11,6 +11,9 @@ const app = express();
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
+// Mount auth routes
+app.use('/auth', require('./routes/authRoutes'));
+
 // Get MongoDB URI and port from environment variables
 const MONGODB_URI = process.env.MONGODB_URI;
 const PORT = process.env.PORT || 3000;
