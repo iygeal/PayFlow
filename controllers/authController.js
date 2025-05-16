@@ -1,7 +1,8 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Wallet = require('../models/wallet');
+const { get } = require('mongoose');
 
 // Register a new user and auto-create wallet
 const registerUser = async (req, res) => {
@@ -59,6 +60,10 @@ const registerUser = async (req, res) => {
         email: newUser.email,
         firstName: newUser.firstName,
         lastName: newUser.lastName,
+        wallet: {
+          id: newWallet._id,
+          balance: newWallet.balance,
+        },
       },
     });
   } catch (error) {
@@ -122,8 +127,42 @@ const loginUser = async (req, res) => {
   }
 };
 
+// Get the profile of the logged-in user
+const getUserProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Find user by id and populate wallet details
+    const user = await User.findById(userId).populate('wallet');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    res.status(200).json({
+      id: user._id,
+      firstName: user.firstName,
+      middleName: user.middleName,
+      lastName: user.lastName,
+      email: user.email,
+      wallet: user.wallet
+        ? {
+            id: user.wallet._id,
+            balance: user.wallet.balance,
+          }
+        : null,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    });
+  } catch (error) {
+    console.error('Get profile error:', error);
+    res.status(500).json({ message: 'Server error fetching profile.' });
+  }
+};
+
 // Export controller functions
 module.exports = {
   registerUser,
   loginUser,
+  getUserProfile,
 };
