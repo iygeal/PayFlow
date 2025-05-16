@@ -8,7 +8,7 @@ const registerUser = async (req, res) => {
   try {
     const { firstName, middleName, lastName, email, password } = req.body;
 
-    // Check required fields
+    // Validate required fields
     if (!firstName || !lastName || !email || !password) {
       return res
         .status(400)
@@ -23,14 +23,14 @@ const registerUser = async (req, res) => {
         .json({ message: 'User already exists with this email.' });
     }
 
-    // Hash the password
+    // Hash the password securely
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Create wallet with 0 balance
+    // Create a wallet with default balance
     const newWallet = new Wallet({ balance: 0 });
     await newWallet.save();
 
-    // Create user with reference to wallet
+    // Create the user and link to the wallet
     const newUser = new User({
       firstName,
       middleName,
@@ -39,14 +39,18 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       wallet: newWallet._id,
     });
-
     await newUser.save();
 
-    // Generate JWT
+    // Now update the wallet to reference the newly created user
+    newWallet.user = newUser._id;
+    await newWallet.save();
+
+    // Generate JWT token for the session
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
 
+    // Respond with success message and minimal user info
     res.status(201).json({
       message: 'User registered successfully.',
       token,
