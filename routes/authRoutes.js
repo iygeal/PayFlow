@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// Import controller functions (to be created)
+// Import controller functions
 const { registerUser, loginUser } = require('../controllers/authController');
 
 // Route to register a new user

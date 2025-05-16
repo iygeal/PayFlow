@@ -67,4 +67,63 @@ const registerUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser };
+// Login an existing user
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate request body
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: 'Email and password are required.' });
+    }
+
+    // Find user by email; also populate wallet info
+    const user = await User.findOne({ email }).populate('wallet');
+
+    // If user doesn't exist
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: 'No account found with this email.' });
+    }
+
+    // Compare entered password with hashed one in DB
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid email or password.' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
+
+    // Send success response
+    res.status(200).json({
+      message: 'Login successful.',
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        firstName: user.firstName,
+        middleName: user.middleName,
+        lastName: user.lastName,
+        walletBalance: user.wallet?.balance || 0,
+      },
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res
+      .status(500)
+      .json({ message: 'Server error during login. Please try again.' });
+  }
+};
+
+// Export controller functions
+module.exports = {
+  registerUser,
+  loginUser,
+};
