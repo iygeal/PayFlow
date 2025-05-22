@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Wallet = require('../models/wallet');
+const generateTokens = require('../utils/generateTokens');
 
 // Register a new user and auto-create wallet
 const registerUser = async (req, res) => {
@@ -45,15 +46,14 @@ const registerUser = async (req, res) => {
     newWallet.user = newUser._id;
     await newWallet.save();
 
-    // Generate JWT token for the session
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
+    // Generate JWT tokens for the session
+    const { accessToken, refreshToken } = generateTokens(newUser._id);
 
     // Respond with success message and minimal user info
     res.status(201).json({
       message: 'User registered successfully.',
-      token,
+      accessToken,
+      refreshToken,
       user: {
         id: newUser._id,
         email: newUser.email,
@@ -100,15 +100,14 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
+    // Generate JWT tokens
+    const { accessToken, refreshToken } = generateTokens(user._id);
 
     // Send success response
     res.status(200).json({
       message: 'Login successful.',
-      token,
+      accessToken,
+      refreshToken,
       user: {
         id: user._id,
         email: user.email,
@@ -159,7 +158,7 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-// Export controller functions
+// Export user controller functions
 module.exports = {
   registerUser,
   loginUser,

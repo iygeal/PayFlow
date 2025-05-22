@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+// Middleware to validate email format
+const validateEmail = require('../middleware/validateEmail');
+
 // Import controller functions
 const {
   registerUser,
@@ -9,7 +12,7 @@ const {
 } = require('../controllers/userController');
 
 // Route to register a new user
-router.post('/register', registerUser);
+router.post('/register', validateEmail, registerUser);
 
 // Route to login an existing user
 router.post('/login', loginUser);

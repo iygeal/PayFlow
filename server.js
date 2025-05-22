@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 // Mount auth routes
-app.use('/auth', require('./routes/authRoutes'));
+app.use('/auth', require('./routes/userRoutes'));
 
 // Get MongoDB URI and port from environment variables
 const MONGODB_URI = process.env.MONGODB_URI;
