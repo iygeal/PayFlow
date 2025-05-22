@@ -2,7 +2,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Wallet = require('../models/wallet');
-const { get } = require('mongoose');
 
 // Register a new user and auto-create wallet
 const registerUser = async (req, res) => {

@@ -6,12 +6,15 @@ const {
   registerUser,
   loginUser,
   getUserProfile,
-} = require('../controllers/authController');
+} = require('../controllers/userController');
 
 // Route to register a new user
-router.post('/register', registerUser, getUserProfile);
+router.post('/register', registerUser);
 
 // Route to login an existing user
-router.post('/login', loginUser, getUserProfile);
+router.post('/login', loginUser);
+
+// Route to get the profile of the logged-in user
+router.get('/profile/:id', getUserProfile);
 
 module.exports = router;
