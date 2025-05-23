@@ -39,4 +39,4 @@ const authorize = async (req, res, next) => {
 };
 
 // Export the middleware
-module.exports = authorize;
+module.exports = { authorize };
