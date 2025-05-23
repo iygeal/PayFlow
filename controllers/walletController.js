@@ -11,7 +11,7 @@ const fundWallet = async (req, res) => {
         .json({ message: 'Amount must be greater than 0.' });
     }
 
-    const wallet = await Wallet.findOne({ owner: userId });
+    const wallet = await Wallet.findOne({ user: userId });
 
     if (!wallet) {
       return res.status(404).json({ message: 'Wallet not found.' });
