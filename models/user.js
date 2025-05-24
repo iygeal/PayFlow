@@ -27,6 +27,12 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Wallet',
     required: true
+  },
+  resetToken: {
+    type: String
+  },
+  resetTokenExpiry: {
+    type: Date
   }
 },
 {
