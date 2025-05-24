@@ -46,6 +46,49 @@ const forgotPassword = async (req, res) => {
   }
 };
 
+// The actual password reset logic
+const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+    if (!newPassword || newPassword.length < 6) {
+      return res
+        .status(400)
+        .json({ message: 'New password must be at least 6 characters.' });
+    }
+
+    const user = await User.findOne({
+      resetToken: token,
+      resetTokenExpiry: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid or expired token.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+    user.password = hashedPassword;
+    user.resetToken = undefined;
+    user.resetTokenExpiry = undefined;
+    await user.save();
+
+    await sendEmail(
+      user.email,
+      'Password Reset Successful',
+      'Your password has been changed successfully.',
+      `<p>Your password has been <strong>successfully</strong> reset. If you didn’t initiate this, please contact support immediately.</p>`
+    );
+
+    res.status(200).json({ message: 'Password has been reset successfully.' });
+  } catch (error) {
+    console.error('Reset Password Error:', error);
+    res.status(500).json({ message: 'Server error while resetting password.' });
+  }
+};
+
 module.exports = {
   forgotPassword,
+  resetPassword,
 };
