@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-// Middleware to validate email format
+// Import middleware
 const validateEmail = require('../middleware/validateEmail');
+const { authorize } = require('../middleware/authorization');
 
 // Import controller functions
 const {
@@ -18,6 +19,6 @@ router.post('/register', validateEmail, registerUser);
 router.post('/login', loginUser);
 
 // Route to get the profile of the logged-in user
-router.get('/profile/:id', getUserProfile);
+router.get('/profile/:id', authorize, getUserProfile);
 
 module.exports = router;

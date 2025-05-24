@@ -130,6 +130,11 @@ const getUserProfile = async (req, res) => {
   try {
     const userId = req.params.id;
 
+    // Ensure the user is the logged in user
+    if (String(userId) !== String(req.user.id)) {
+      return res.status(403).json({ message: 'Unauthorized access.' });
+    }
+
     // Find user by id and populate wallet details
     const user = await User.findById(userId).populate('wallet');
 
