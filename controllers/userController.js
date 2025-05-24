@@ -3,12 +3,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Wallet = require('../models/wallet');
 const generateTokens = require('../utils/generateTokens');
-const crypto = require('crypto');
-const sendEmail = require('../utils/sendEmail');
-
-// Import environment variables
-require('dotenv').config();
-PORT = process.env.PORT || 3000;
 
 // Register a new user and auto-create wallet
 const registerUser = async (req, res) => {
@@ -169,46 +163,9 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-// Implementation of forgot password feature
-const forgotPassword = async (req, res) => {
-  try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found.' });
-    }
-
-    // Generate reset token
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    const tokenExpiry = Date.now() + 3600000; // expires in 1 hour
-
-    // Store on user schema in DB
-    user.resetToken = resetToken;
-    user.resetTokenExpiry = tokenExpiry;
-    await user.save();
-
-    const resetLink = `http://localhost:${PORT}/reset-password/${resetToken}`;
-
-    await sendEmail(
-      user.email,
-      'Reset Your Password',
-      `To reset your password, click here: ${resetLink}`
-    );
-
-    res.status(200).json({ message: 'Check your email for password reset.' });
-  } catch (error) {
-    console.error('Forgot Password Error:', error);
-    res
-      .status(500)
-      .json({ message: 'Server error during password reset request.' });
-  }
-};
-
 // Export user controller functions
 module.exports = {
   registerUser,
   loginUser,
   getUserProfile,
-  forgotPassword,
 };

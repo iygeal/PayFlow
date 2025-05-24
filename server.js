@@ -20,6 +20,9 @@ app.use('/transaction', require('./routes/transactionRoutes'));
 // Mount wallet routes
 app.use('/wallet', require('./routes/walletRoutes'));
 
+// Mount password reset routes
+app.use('/password', require('./routes/passwordRoutes'));
+
 // Get MongoDB URI and port from environment variables
 const MONGODB_URI = process.env.MONGODB_URI;
 const PORT = process.env.PORT || 3000;
