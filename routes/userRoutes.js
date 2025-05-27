@@ -3,7 +3,7 @@ const router = express.Router();
 
 // Import middleware
 const validateEmail = require('../middleware/validateEmail');
-const { authorize } = require('../middleware/authorization');
+const authorize = require('../middleware/authorization');
 
 // Import controller functions
 const {

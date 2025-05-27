@@ -1,8 +1,9 @@
-// routes/transactionRoutes.js
+// Import express and create a router
 const express = require('express');
 const router = express.Router();
 
-const { authorize } = require('../middleware/authorization');
+// Import middleware and controller functions
+const authorize = require('../middleware/authorization');
 const {
   transferMoney,
   getUserTransactions,

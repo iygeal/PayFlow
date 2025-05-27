@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { authorize } = require('../middleware/authorization');
+const authorize = require('../middleware/authorization');
 const { fundWallet } = require('../controllers/walletController');
 
 router.post('/fund', authorize, fundWallet);
