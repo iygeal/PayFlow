@@ -5,12 +5,23 @@ const router = express.Router();
 const validateEmail = require('../middleware/validateEmail');
 
 // Import controller functions
-const { registerUser, loginUser } = require('../controllers/authController');
+const {
+  registerUser,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+} = require('../controllers/authController');
 
 // Route to register a new user
 router.post('/register', validateEmail, registerUser);
 
 // Route to login an existing user
 router.post('/login', loginUser);
+
+// Route to initiate password reset
+router.post('/forgot-password', forgotPassword);
+
+// Route to reset password
+router.post('/reset-password/:token', resetPassword);
 
 module.exports = router;

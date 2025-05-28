@@ -203,7 +203,7 @@ const resetPassword = async (req, res) => {
       user.email,
       'Password Reset Successful',
       'Your password has been changed successfully.',
-      `<p>Your password has been <strong>successfully</strong> reset. If you didn’t initiate this, please contact support immediately.</p>`
+      `<p>Your password has been <strong>successfully</strong> reset. If you didn’t initiate this, please contact PayFlow support immediately.</p>`
     );
 
     res.status(200).json({ message: 'Password has been reset successfully.' });

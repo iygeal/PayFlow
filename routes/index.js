@@ -13,6 +13,5 @@ router.use('/auth', require('./authRoutes'));
 router.use('/users', require('./userRoutes'));
 router.use('/transactions', require('./transactionRoutes'));
 router.use('/wallets', require('./walletRoutes'));
-router.use('/passwords', require('./passwordRoutes'));
 
 module.exports = router;
