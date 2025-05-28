@@ -15,6 +15,9 @@ const {
 // Route to register a new user
 router.post('/register', validateEmail, registerUser);
 
+// Route to verify email
+router.get('/verify-email/:token', verifyEmail);
+
 // Route to login an existing user
 router.post('/login', loginUser);
 

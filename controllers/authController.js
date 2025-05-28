@@ -4,7 +4,7 @@ const User = require('../models/user');
 const Wallet = require('../models/wallet');
 const generateTokens = require('../utils/generateTokens');
 
-// Password reset dependencies
+// Dependencies for email verification and password reset
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
 require('dotenv').config();
@@ -46,31 +46,58 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       wallet: newWallet._id,
     });
-    await newUser.save();
 
-    // Now update the wallet to reference the newly created user
+    // If email verification is enabled, generate token and attach to user
+    if (process.env.REQUIRE_EMAIL_VERIFICATION === 'true') {
+      const verificationToken = crypto.randomBytes(32).toString('hex');
+      const verificationTokenEpiry = Date.now() + 24 * 60 * 60 * 1000;
+
+      newUser.verificationToken = verificationToken;
+      newUser.verificationTokenEpiry = verificationTokenEpiry;
+
+      const verifyLink = `http://localhost:${PORT}/verify-email/${verificationToken}`;
+
+      await sendEmail(
+        email,
+        'verify your Email Address',
+        `Click this link to verify your email: ${verifyLink}`,
+        `<p>Hi ${firstName},</p>
+        <p>Welcome to PayFlow! Please verify your email by clicking the link below:</p>
+        <p><a href="${verifyLink}">Verify My Email<a/></p>
+        <p>This link expires in 24 hours.</p>`
+      );
+    }
+
+    // Save the user and update wallet reference
+    await newUser.save();
     newWallet.user = newUser._id;
     await newWallet.save();
 
     // Generate JWT tokens for the session
     const { accessToken, refreshToken } = generateTokens(newUser._id);
 
-    // Respond with success message and minimal user info
-    res.status(201).json({
-      message: 'User registered successfully.',
-      accessToken,
-      refreshToken,
-      user: {
-        id: newUser._id,
-        email: newUser.email,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        wallet: {
-          id: newWallet._id,
-          balance: newWallet.balance,
+    // Respond based on if email verification is required
+    if (process.env.REQUIRE_EMAIL_VERIFICATION === 'true') {
+      return res.status(201).json({
+        message: 'User registered. Check your email to verify your account.',
+      });
+    } else {
+      res.status(201).json({
+        message: 'User registered successfully.',
+        accessToken,
+        refreshToken,
+        user: {
+          id: newUser._id,
+          email: newUser.email,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          wallet: {
+            id: newWallet._id,
+            balance: newWallet.balance,
+          },
         },
-      },
-    });
+      });
+    }
   } catch (error) {
     console.error('Registration error:', error);
     res.status(500).json({ message: 'Server error. Please try again later.' });
@@ -130,7 +157,6 @@ const loginUser = async (req, res) => {
       .json({ message: 'Server error during login. Please try again.' });
   }
 };
-
 
 // Implementation of forgot password feature
 const forgotPassword = async (req, res) => {
@@ -212,10 +238,43 @@ const resetPassword = async (req, res) => {
     res.status(500).json({ message: 'Server error while resetting password.' });
   }
 };
+
+// Email verification logic using token from email
+const verifyEmail = async (req, res) => {
+  try {
+    const { token } = req.params;
+
+    const user = await User.findOne({
+      verificationToken: token,
+      verificationTokenEpiry: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid or expired token!' });
+    }
+
+    // Mark user as verified and clear token fields by setting them to undefined
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    user.verificationTokenEpiry - undefined;
+
+    await user.save();
+
+    res
+      .status(200)
+      .json({ message: 'Email verified successfully. You can now log in.' });
+  } catch (error) {
+    console.error('Email verification error:', error);
+    res
+      .status(500)
+      .json({ message: 'Server error during email verification.' });
+  }
+};
 // Export controller functions
 module.exports = {
   registerUser,
   loginUser,
   forgotPassword,
   resetPassword,
+  verifyEmail,
 };
