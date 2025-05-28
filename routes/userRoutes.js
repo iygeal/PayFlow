@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Import middleware
-const authorize = require('../middleware/authorization');
+const authorize = require('../middleware/authMiddleware');
 
 // Import controller functions
 const { getUserProfile } = require('../controllers/userController');

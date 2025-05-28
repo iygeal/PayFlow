@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 // Import middleware and controller functions
-const authorize = require('../middleware/authorization');
+const authorize = require('../middleware/authMiddleware');
 const {
   transferMoney,
   getUserTransactions,
