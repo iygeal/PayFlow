@@ -126,7 +126,15 @@ const loginUser = async (req, res) => {
         .json({ message: 'No account found with this email.' });
     }
 
-    // Compare entered password with hashed one in DB
+    // Block login if email is not verified (and it's required)
+    if (process.env.REQUIRE_EMAIL_VERIFICATION === 'true' && !user.isVerified) {
+      return res.status(403).json({
+        message:
+          'Email not verified. Please check your inbox for a verification link; or request Iygeal Anozie to allow you a testing time.',
+      });
+    }
+
+    // Compare entered password with the hashed one in DB
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {

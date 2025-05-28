@@ -10,6 +10,7 @@ const {
   loginUser,
   forgotPassword,
   resetPassword,
+  verifyEmail,
 } = require('../controllers/authController');
 
 // Route to register a new user
