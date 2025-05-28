@@ -55,7 +55,7 @@ const registerUser = async (req, res) => {
       newUser.verificationToken = verificationToken;
       newUser.verificationTokenEpiry = verificationTokenEpiry;
 
-      const verifyLink = `http://localhost:${PORT}/verify-email/${verificationToken}`;
+      const verifyLink = `http://localhost:${PORT}/api/v1/auth/verify-email/${verificationToken}`;
 
       await sendEmail(
         email,
@@ -185,7 +185,7 @@ const forgotPassword = async (req, res) => {
     user.resetTokenExpiry = tokenExpiry;
     await user.save();
 
-    const resetLink = `http://localhost:${PORT}/reset-password/${resetToken}`;
+    const resetLink = `http://localhost:${PORT}/api/v1/reset-password/${resetToken}`;
 
     await sendEmail(
       user.email,
@@ -264,7 +264,7 @@ const verifyEmail = async (req, res) => {
     // Mark user as verified and clear token fields by setting them to undefined
     user.isVerified = true;
     user.verificationToken = undefined;
-    user.verificationTokenEpiry - undefined;
+    user.verificationTokenEpiry = undefined;
 
     await user.save();
 
