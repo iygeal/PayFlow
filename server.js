@@ -1,7 +1,7 @@
 // Load environment variables from .env file
 require('dotenv').config();
 
-// Import necessary dependencies and files
+// Import necessary dependencies
 const mongoose = require('mongoose');
 const express = require('express');
 
@@ -11,17 +11,11 @@ const app = express();
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-// Mount auth routes
-app.use('/auth', require('./routes/userRoutes'));
+// Import routes
+const routes = require('./routes');
 
-// Mount transaction routes
-app.use('/transaction', require('./routes/transactionRoutes'));
-
-// Mount wallet routes
-app.use('/wallet', require('./routes/walletRoutes'));
-
-// Mount password reset routes
-app.use('/password', require('./routes/passwordRoutes'));
+// Mount all the combined routes with versioned RESTful API prefix
+app.use('/api/v1', routes);
 
 // Get MongoDB URI and port from environment variables
 const MONGODB_URI = process.env.MONGODB_URI;
