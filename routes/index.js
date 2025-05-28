@@ -9,9 +9,10 @@ const express = require('express');
 const router = express.Router();
 
 // Mount all the routes
-router.use('/auth', require('./userRoutes'));
-router.use('/transaction', require('./transactionRoutes'));
-router.use('/wallet', require('./walletRoutes'));
-router.use('/password', require('./passwordRoutes'));
+router.use('/auth', require('./authRoutes'));
+router.use('/users', require('./userRoutes'));
+router.use('/transactions', require('./transactionRoutes'));
+router.use('/wallets', require('./walletRoutes'));
+router.use('/passwords', require('./passwordRoutes'));
 
 module.exports = router;
