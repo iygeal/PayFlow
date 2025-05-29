@@ -1,5 +1,5 @@
+const PORT = process.env.PORT || 3000;
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Wallet = require('../models/wallet');
 const generateTokens = require('../utils/generateTokens');
@@ -7,9 +7,7 @@ const generateTokens = require('../utils/generateTokens');
 // Dependencies for email verification and password reset
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
-require('dotenv').config();
-PORT = process.env.PORT || 3000;
-
+console.log('Email verification setting:', process.env.REQUIRE_EMAIL_VERIFICATION);
 // Register a new user and auto-create wallet
 const registerUser = async (req, res) => {
   try {
@@ -47,19 +45,24 @@ const registerUser = async (req, res) => {
       wallet: newWallet._id,
     });
 
+
     // If email verification is enabled, generate token and attach to user
     if (process.env.REQUIRE_EMAIL_VERIFICATION === 'true') {
+      console.log('Email verification setting:', process.env.REQUIRE_EMAIL_VERIFICATION);
       const verificationToken = crypto.randomBytes(32).toString('hex');
-      const verificationTokenEpiry = Date.now() + 24 * 60 * 60 * 1000;
 
-      newUser.verificationToken = verificationToken;
-      newUser.verificationTokenEpiry = verificationTokenEpiry;
+      console.log('Generated token:', verificationToken);
+
+      const verificationTokenExpiry = Date.now() + 24 * 60 * 60 * 1000;
+
+      newUser.emailVerificationToken = verificationToken;
+      newUser.emailVerificationExpiry = verificationTokenExpiry;
 
       const verifyLink = `http://localhost:${PORT}/api/v1/auth/verify-email/${verificationToken}`;
 
       await sendEmail(
         email,
-        'verify your Email Address',
+        'Verify your Email Address',
         `Click this link to verify your email: ${verifyLink}`,
         `<p>Hi ${firstName},</p>
         <p>Welcome to PayFlow! Please verify your email by clicking the link below:</p>
@@ -251,10 +254,11 @@ const resetPassword = async (req, res) => {
 const verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
+    console.log('Token from request:', token);
 
     const user = await User.findOne({
-      verificationToken: token,
-      verificationTokenEpiry: { $gt: Date.now() },
+      emailVerificationToken: token,
+      emailVerificationExpiry: { $gt: Date.now() },
     });
 
     if (!user) {
@@ -263,8 +267,8 @@ const verifyEmail = async (req, res) => {
 
     // Mark user as verified and clear token fields by setting them to undefined
     user.isVerified = true;
-    user.verificationToken = undefined;
-    user.verificationTokenEpiry = undefined;
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpiry = undefined;
 
     await user.save();
 

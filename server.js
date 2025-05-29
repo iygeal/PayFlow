@@ -1,6 +1,4 @@
-// Load environment variables from .env file
 require('dotenv').config();
-
 // Import necessary dependencies
 const mongoose = require('mongoose');
 const express = require('express');
