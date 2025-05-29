@@ -7,7 +7,6 @@ const generateTokens = require('../utils/generateTokens');
 // Dependencies for email verification and password reset
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
-console.log('Email verification setting:', process.env.REQUIRE_EMAIL_VERIFICATION);
 // Register a new user and auto-create wallet
 const registerUser = async (req, res) => {
   try {
@@ -48,10 +47,7 @@ const registerUser = async (req, res) => {
 
     // If email verification is enabled, generate token and attach to user
     if (process.env.REQUIRE_EMAIL_VERIFICATION === 'true') {
-      console.log('Email verification setting:', process.env.REQUIRE_EMAIL_VERIFICATION);
       const verificationToken = crypto.randomBytes(32).toString('hex');
-
-      console.log('Generated token:', verificationToken);
 
       const verificationTokenExpiry = Date.now() + 24 * 60 * 60 * 1000;
 
@@ -254,7 +250,6 @@ const resetPassword = async (req, res) => {
 const verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;
-    console.log('Token from request:', token);
 
     const user = await User.findOne({
       emailVerificationToken: token,

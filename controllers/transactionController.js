@@ -45,8 +45,17 @@ const transferMoney = async (req, res) => {
 
     // Log transaction
     const transaction = new Transaction({
-      sender: sender._id,
-      receiver: receiver._id,
+      sender: {id: sender._id,
+        firstName: sender.firstName,
+        lastName: sender.lastName,
+        email: sender.email
+      },
+      receiver: {
+        id: receiver._id,
+        firstName: receiver.firstName,
+        lastName: receiver.lastName,
+        email: receiver.email
+      },
       amount,
       description,
     });
@@ -57,7 +66,7 @@ const transferMoney = async (req, res) => {
       transaction: {
         ...transaction._doc,
         type: 'debit', // Type is 'debit' for the sender
-      },
+      }
     });
   } catch (error) {
     console.error('Transfer error:', error);
@@ -99,3 +108,4 @@ module.exports = {
   transferMoney,
   getUserTransactions,
 };
+
