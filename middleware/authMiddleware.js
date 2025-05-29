@@ -15,12 +15,13 @@ const authorize = async (req, res, next) => {
   }
 
   // Extract only the token from the Bearer token by splitting with empty space
+  // and taking the second element (the token itself)
   const token = authHeader.split(' ')[1];
   try {
     // Verify token using secret key from .env file
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Check if user exists in DB
+    // Get user by id from the decoded token
     const user = await User.findById(decoded.id);
     if (!user) {
       return res.status(404).json({ message: 'User not found.' });
@@ -39,4 +40,4 @@ const authorize = async (req, res, next) => {
 };
 
 // Export the middleware
-module.exports = { authorize };
+module.exports = authorize;

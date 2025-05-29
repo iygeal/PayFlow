@@ -30,6 +30,43 @@ const fundWallet = async (req, res) => {
   }
 };
 
+// Get current wallet balance with timestamp
+const getWalletBalance = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const wallet = await Wallet.findOne({ user: userId });
+
+    if (!wallet) {
+      return res.status(404).json({ message: 'Wallet not found.' });
+    }
+
+    // Format the time to show local time
+    const readableTime = new Date().toLocaleString('en-US', {
+      timeZone: 'Africa/Lagos',
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    });
+    res.status(200).json({
+      walletId: wallet._id,
+      balance: wallet.balance,
+
+      // Show the user the exact time the balance was fetched
+      asAt: readableTime,
+    });
+  } catch (error) {
+    console.error('Error fetching wallet balance:', error);
+    res
+      .status(500)
+      .json({ message: 'Server error while fetching wallet balance.' });
+  }
+};
+
 module.exports = {
   fundWallet,
+  getWalletBalance,
 };

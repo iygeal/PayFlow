@@ -1,23 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-// Middleware to validate email format
-const validateEmail = require('../middleware/validateEmail');
+// Import middleware
+const authorize = require('../middleware/authMiddleware');
 
 // Import controller functions
-const {
-  registerUser,
-  loginUser,
-  getUserProfile,
-} = require('../controllers/userController');
-
-// Route to register a new user
-router.post('/register', validateEmail, registerUser);
-
-// Route to login an existing user
-router.post('/login', loginUser);
+const { getUserProfile } = require('../controllers/userController');
 
 // Route to get the profile of the logged-in user
-router.get('/profile/:id', getUserProfile);
+router.get('/profile/:id', authorize, getUserProfile);
 
 module.exports = router;
