@@ -9,7 +9,7 @@ const app = express();
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-// Import routes
+// Import all routes
 const routes = require('./routes');
 
 // Mount all the combined routes with versioned RESTful API prefix
@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 3000;
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    console.log('MongoDB connected successfully to the PayFlow database');
+    console.log('MongoDB connected successfully to the PayFlow database.');
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
