@@ -12,6 +12,25 @@ app.use(express.json());
 // Import all routes
 const routes = require('./routes');
 
+// Root welcome route
+app.get('/', (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <title>PayFlow API</title>
+        <style>
+          body { font-family: Arial; text-align: center; padding: 50px; }
+          h1 { color: #4CAF50; }
+        </style>
+      </head>
+      <body>
+        <h1>Welcome to PayFlow API</h1>
+        <p>This is the backend API service. For documentation or usage, please contact the Dev Iygeal Anozie :-).</p>
+      </body>
+    </html>
+  `);
+});
+
 // Mount all the combined routes with versioned RESTful API prefix
 app.use('/api/v1', routes);
 
