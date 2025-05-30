@@ -3,6 +3,24 @@
  * It provides a single entry point for the app's routes
  */
 
+// Root welcome route
+router.get('/', (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <title>PayFlow API</title>
+        <style>
+          body { font-family: Arial; text-align: center; padding: 50px; }
+          h1 { color: #4CAF50; }
+        </style>
+      </head>
+      <body>
+        <h1>Welcome to PayFlow API</h1>
+        <p>This is the backend API service. For documentation or usage, please contact the developer.</p>
+      </body>
+    </html>
+  `);
+});
 
 // Import express and create a router object
 const express = require('express');
