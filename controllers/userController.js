@@ -63,7 +63,7 @@ const updateUserProfile = async (req, res) => {
         id: updatedUser._id,
         firstName: updatedUser.firstName,
         middleName: updatedUser.middleName,
-        lastName: updatedUser.middleName,
+        lastName: updatedUser.lastName,
         email: updatedUser.email,
         wallet: updatedUser.wallet,
         updatedAt: updatedUser.updatedAt,
