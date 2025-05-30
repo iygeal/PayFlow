@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const Wallet = require('../models/wallet');
 const generateTokens = require('../utils/generateTokens');
+const BASE_URL = process.env.BASE_URL;
 
 // Dependencies for email verification and password reset
 const crypto = require('crypto');
@@ -54,7 +55,7 @@ const registerUser = async (req, res) => {
       newUser.emailVerificationToken = verificationToken;
       newUser.emailVerificationExpiry = verificationTokenExpiry;
 
-      const verifyLink = `http://localhost:${PORT}/api/v1/auth/verify-email/${verificationToken}`;
+      const verifyLink = `${BASE_URL}/api/v1/auth/verify-email/${verificationToken}`;
 
       await sendEmail(
         email,
@@ -184,7 +185,7 @@ const forgotPassword = async (req, res) => {
     user.resetTokenExpiry = tokenExpiry;
     await user.save();
 
-    const resetLink = `http://localhost:${PORT}/api/v1/auth/reset-password/${resetToken}`;
+    const resetLink = `${BASE_URL}/api/v1/auth/reset-password/${resetToken}`;
 
     await sendEmail(
       user.email,
