@@ -184,7 +184,7 @@ const forgotPassword = async (req, res) => {
     user.resetTokenExpiry = tokenExpiry;
     await user.save();
 
-    const resetLink = `http://localhost:${PORT}/api/v1/reset-password/${resetToken}`;
+    const resetLink = `http://localhost:${PORT}/api/v1/auth/reset-password/${resetToken}`;
 
     await sendEmail(
       user.email,
