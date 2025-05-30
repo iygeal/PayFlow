@@ -3,6 +3,10 @@
  * It provides a single entry point for the app's routes
  */
 
+// Import express and create a router object
+const express = require('express');
+const router = express.Router();
+
 // Root welcome route
 router.get('/', (req, res) => {
   res.send(`
@@ -21,10 +25,6 @@ router.get('/', (req, res) => {
     </html>
   `);
 });
-
-// Import express and create a router object
-const express = require('express');
-const router = express.Router();
 
 // Mount all the routes
 router.use('/auth', require('./authRoutes'));
