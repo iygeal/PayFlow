@@ -10,29 +10,11 @@ const app = express();
 app.use(express.json());
 
 // Import all routes
+const welcomeRoute = require('./routes/welcomeRoute');
 const routes = require('./routes');
 
-// Root welcome route
-app.get('/', (req, res) => {
-  res.send(`
-    <html>
-      <head>
-        <title>PayFlow API</title>
-        <style>
-          body { font-family: Arial; text-align: center; padding: 50px; }
-          h1 { color: #4CAF50; }
-        </style>
-      </head>
-      <body>
-        <h1>Welcome to PayFlow API</h1>
-        <h2>This is the backend API service.</h2>
-        <h3>Click <a href="https://documenter.getpostman.com/view/36820009/2sB2qgeJiF">here</a> to view the API Documentation.</h3>
-      </body>
-    </html>
-  `);
-});
-
 // Mount all the combined routes with versioned RESTful API prefix
+app.use('/', welcomeRoute);
 app.use('/api/v1', routes);
 
 // Get MongoDB URI and port from environment variables
