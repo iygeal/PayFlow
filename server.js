@@ -25,7 +25,8 @@ app.get('/', (req, res) => {
       </head>
       <body>
         <h1>Welcome to PayFlow API</h1>
-        <p>This is the backend API service. For documentation or usage, please contact the Dev Iygeal Anozie :-).</p>
+        <h2>This is the backend API service.</h2>
+        <h3>Click <a href="https://documenter.getpostman.com/view/36820009/2sB2qgeJiF">here</a> to view the API Documentation.</h3>
       </body>
     </html>
   `);
