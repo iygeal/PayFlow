@@ -90,4 +90,4 @@ This project is licensed under the MIT License – feel free to use, fork, and c
 
 -- Special thanks to [Render](https://render.com/) for providing the free deployment service and [Postman](https://www.getpostman.com/) for the API documentation platform.
 
--- In a special way, I thank the CareerEx Tutor [David Sampson](https://www.linkedin.com/in/david-sampson/) for his invaluable guidance and support. He's a great tutor of Software Development, and I'm grateful for his expertise.
+-- In a special way, I thank the CareerEx Tutor [David Sampson](https://www.linkedin.com/in/david-sampson/) for his invaluable guidance and support. He's a great tutor of Software Development in general, and I'm grateful for his expertise.
