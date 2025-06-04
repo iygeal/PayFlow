@@ -75,7 +75,10 @@ The app will be running at [http://localhost:5000](http://localhost:5000)
 Use the provided Postman Docs for API testing.
 
 ### Developer
-Name: [Iygeal Anozie](https://www.linkedin.com/in/iygeal/)  (LinkedIn)
+Name: [Iygeal Anozie](https://www.linkedin.com/in/iygeal/)(LinkedIn)
+
+Twitter: [https://twitter.com/iygeal](https://twitter.com/iygeal)
+
 GitHub: [https://github.com/iygeal](https://github.com/iygeal)
 
 ### License
@@ -83,7 +86,7 @@ This project is licensed under the MIT License – feel free to use, fork, and c
 
 
 ### Acknowledgments
--- Thanks to [Nodemailer](https://nodemailer.com/) for the email verification and password reset features.  
+-- Thanks to [Nodemailer](https://nodemailer.com/) for the email verification and password reset features.
 -- Special thanks to [Render](https://render.com/) for providing the free deployment service and [Postman](https://www.getpostman.com/) for the API documentation platform.
 
 -- In a special way, I thank the CareerEx Tutor [David Sampson](https://www.linkedin.com/in/david-sampson/) for his invaluable guidance and support. He's a great tutor of Software Development, and I'm grateful for his expertise.
