@@ -72,8 +72,7 @@ npm start
 The app will be running at [http://localhost:5000](http://localhost:5000)
 
 ### API Testing
-Use the provided Postman Docs for API testing.
-
+Use the provided [Postman Docs](https://documenter.getpostman.com/view/36820009/2sB2qgeJiF) to test the API endpoints.
 ### Developer
 Name: [Iygeal Anozie](https://www.linkedin.com/in/iygeal/)(LinkedIn)
 
