@@ -11,7 +11,7 @@ const sendEmail = async (to, subject, text, html) => {
 
   // Define email details
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: `"PayFlow Alerts" <${process.env.EMAIL_USER}>`,
     to,
     subject,
     text,
