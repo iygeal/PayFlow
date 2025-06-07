@@ -30,7 +30,7 @@ PayFlow is a RESTful API built with Node.js, Express, and MongoDB that simulates
 
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB (with Mongoose)
-- **Authentication:** JWT, Bcrypt, Nodemailer
+- **Authentication:** JWT, Bcrypt, Nodemailer, Crypto
 - **Hosting:** Render
 - **Documentation:** Postman
 
