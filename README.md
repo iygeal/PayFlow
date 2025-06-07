@@ -19,8 +19,8 @@ PayFlow is a RESTful API built with Node.js, Express, and MongoDB that simulates
 - 👤 Get user profile
 - ✏️ Update or delete account
 - 💰 Auto wallet creation for new users
-- ➕ Fund wallet
-- 🔄 Peer-to-peer money transfers
+- ➕ Fund wallet (and receive email alert with updated balance)
+- 🔄 Peer-to-peer money transfers (and alerts to each user indicating credit/debit with details and updated wallet balance after the transaction.)
 - 📜 View transaction history (credit/debit separation)
 - 📂 Modular route/controller structure for scalability
 
