@@ -1,6 +1,6 @@
 const Wallet = require('../models/wallet');
-const sendAlertEmail = require('../utils/sendAlertEmail');
 const User = require('../models/user');
+const sendEmail = require('../utils/sendEmail');
 
 const fundWallet = async (req, res) => {
   try {
@@ -35,9 +35,10 @@ const fundWallet = async (req, res) => {
       <br>
       <p>Thanks,<br>PayFlow Team</p>
     `;
+    // Now send alert to the user
+    await sendEmail(user.email, 'Wallet Funded Successfully!', '', emailHTML);
 
-    
-    res.status(200).json({
+    await res.status(200).json({
       message: 'Wallet funded successfully.',
       newBalance: wallet.balance,
     });
